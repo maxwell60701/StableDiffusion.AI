@@ -1,0 +1,6 @@
+/.vs
+/TestResults
+/StableDiffusion.AI.Core/bin
+/StableDiffusion.AI.Core/obj
+/StableDiffusion.AI.CoreTests/bin
+/StableDiffusion.AI.CoreTests/obj

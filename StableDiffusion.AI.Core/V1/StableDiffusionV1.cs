@@ -14,7 +14,15 @@ namespace StableDiffusion.AI.Core.V1
             _apiKey = apiKey;
         }
 
-        public async Task<IEnumerable<byte[]>> GenerateImageAsync(string modelName, string prompt, string? negativePrompt = null, ImageArgs? args = null)
+        /// <summary>
+        /// generate images async
+        /// </summary>
+        /// <param name="modelName"></param>
+        /// <param name="prompt">describe what to generate</param>
+        /// <param name="negativePrompt">describe what NOT to generate</param>
+        /// <param name="args"></param>
+        /// <returns></returns>
+        public async Task<IEnumerable<byte[]>> GenerateImagesAsync(string modelName, string prompt, string? negativePrompt = null, ImageArgs? args = null)
         {
             var prompts = new List<Prompts>
             {
@@ -26,18 +34,18 @@ namespace StableDiffusion.AI.Core.V1
             }
             var imageInput = new ImageParams
             {
-                Cfg_scale = args?.Cfg_scale ?? 5,
-                Height = args?.Height ?? 1024,
-                Width = args?.Width ?? 1024,
+                Cfg_scale = args?.Cfg_scale ?? 7,
+                Height = args?.Height ?? Height.Large,
+                Width = args?.Width ?? Width.Large,
                 Sampler = args?.Sampler ?? "K_EULER",
                 Samples = args?.Samples ?? 1,
-                Steps = args?.Steps ?? 10,
+                Steps = args?.Steps ?? 20,
                 Text_Prompts = prompts
             };
-            return await GenerateImageCoreAsync(modelName, imageInput);
+            return await GenerateImagesCoreAsync(modelName, imageInput);
         }
 
-        private async Task<IEnumerable<byte[]>> GenerateImageCoreAsync(string modelName, ImageParams input)
+        private async Task<IEnumerable<byte[]>> GenerateImagesCoreAsync(string modelName, ImageParams input)
         {
             ArgumentNullException.ThrowIfNull(modelName);
             ArgumentNullException.ThrowIfNull(input);

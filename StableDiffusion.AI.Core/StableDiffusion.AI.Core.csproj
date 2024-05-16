@@ -9,7 +9,7 @@
 		<PackageTags>StableDiffusion</PackageTags>
 		<Authors>maxwell60701</Authors>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
-		<PackageVersion>1.0.1</PackageVersion>
+		<PackageVersion>1.0.2</PackageVersion>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<Description>This is an unofficial library just for developers to get stable diffusion ai easily</Description>
 	</PropertyGroup>

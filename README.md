@@ -1,5 +1,5 @@
 # Stable Diffusion AI
-  * This is an unOfficial library just for developers to get stable diffusion ai easily,targetFramework is net 8
+  * This is an unOfficial library just for developers to get stable diffusion ai easily,net standard 2.0
   
     used as shown below
   ```

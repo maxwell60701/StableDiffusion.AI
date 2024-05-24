@@ -28,9 +28,6 @@
         /// How strongly to scale prompt input.Higher CFG scales tend to produce more contrast, and lower CFG scales produce less contrast.
         /// </summary>
         public int Cfg_scale { get; set; }
-        public int Height { get; set; }
-
-        public int Width { get; set; }
 
         public int Samples { get; set; }
 

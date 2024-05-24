@@ -18,11 +18,42 @@ namespace StableDiffusion.AI.Core.V1
         /// generate images async
         /// </summary>
         /// <param name="modelName"></param>
-        /// <param name="prompt">describe what to generate</param>
-        /// <param name="negativePrompt">describe what NOT to generate</param>
+        /// <param name="prompt"></param>
+        /// <param name="negativePrompt"></param>
         /// <param name="args"></param>
         /// <returns></returns>
         public async Task<IEnumerable<byte[]>> GenerateImagesAsync(string modelName, string prompt, string? negativePrompt = null, ImageArgs? args = null)
+        {          
+            return await GenerateImagesAsync(modelName, prompt,Dimension.Resolution1024x1024.Width,Dimension.Resolution1024x1024.Height, negativePrompt,args);
+        }
+
+        /// <summary>
+        ///  generate images async with dimension (recommended)
+        /// </summary>
+        /// <param name="modelName"></param>
+        /// <param name="prompt"></param>
+        /// <param name="dimension"></param>
+        /// <param name="negativePrompt"></param>
+        /// <param name="args"></param>
+        /// <returns></returns>
+        public async Task<IEnumerable<byte[]>> GenerateImagesAsync(string modelName, string prompt, Dimension dimension, string? negativePrompt = null, ImageArgs? args = null)
+        {
+            ArgumentNullException.ThrowIfNull(dimension);
+
+            return await GenerateImagesAsync(modelName, prompt, dimension.Width, dimension.Height, negativePrompt, args);
+        }
+
+        /// <summary>
+        /// generate images async with width and height
+        /// </summary>
+        /// <param name="modelName"></param>
+        /// <param name="prompt"></param>
+        /// <param name="width"></param>
+        /// <param name="height"></param>
+        /// <param name="negativePrompt"></param>
+        /// <param name="args"></param>
+        /// <returns></returns>
+        public async Task<IEnumerable<byte[]>> GenerateImagesAsync(string modelName, string prompt, int width, int height, string? negativePrompt = null, ImageArgs? args = null)
         {
             var prompts = new List<Prompts>
             {
@@ -35,8 +66,8 @@ namespace StableDiffusion.AI.Core.V1
             var imageInput = new ImageParams
             {
                 Cfg_scale = args?.Cfg_scale ?? 7,
-                Height = args?.Height ?? Height.Large,
-                Width = args?.Width ?? Width.Large,
+                Height = height,
+                Width = width,
                 Sampler = args?.Sampler ?? "K_EULER",
                 Samples = args?.Samples ?? 1,
                 Steps = args?.Steps ?? 20,
@@ -44,6 +75,7 @@ namespace StableDiffusion.AI.Core.V1
             };
             return await GenerateImagesCoreAsync(modelName, imageInput);
         }
+
 
         private async Task<IEnumerable<byte[]>> GenerateImagesCoreAsync(string modelName, ImageParams input)
         {
@@ -54,14 +86,11 @@ namespace StableDiffusion.AI.Core.V1
             string requestUrl = $"{BaseAddress}/generation/{modelName}/text-to-image";
             client.DefaultRequestHeaders.Add("Authorization", $"Bearer {_apiKey}");
             var response = await client.PostAsJsonAsync(requestUrl, input);
-            response.EnsureSuccessStatusCode();
             var data = JsonConvert.DeserializeObject<Output>(await response.Content.ReadAsStringAsync());
-
-            ArgumentNullException.ThrowIfNull(data);
-            if (!string.IsNullOrEmpty(data?.Message))
+            if (!response.IsSuccessStatusCode)
             {
-                throw new InvalidDataException($"StabilityAPI refused to generate: {data.Message}");
-            }
+                throw new InvalidDataException($"StabilityAPI refused to generate: {data?.Message}");
+            }         
             var list = new List<byte[]>();
             foreach (var img in data?.Artifacts)
             {

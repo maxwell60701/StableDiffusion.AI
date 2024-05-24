@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using StableDiffusion.AI.Core.V1.Exceptions;
 using StableDiffusion.AI.Core.V1.Images;
-using System.Net.Http.Json;
+using System.Text;
 
 namespace StableDiffusion.AI.Core.V1
 {
@@ -38,8 +38,6 @@ namespace StableDiffusion.AI.Core.V1
         /// <returns></returns>
         public async Task<IEnumerable<byte[]>> GenerateImagesAsync(string modelName, string prompt, Dimension dimension, string? negativePrompt = null, ImageArgs? args = null)
         {
-            ArgumentNullException.ThrowIfNull(dimension);
-
             return await GenerateImagesAsync(modelName, prompt, dimension.Width, dimension.Height, negativePrompt, args);
         }
 
@@ -57,7 +55,7 @@ namespace StableDiffusion.AI.Core.V1
         {
             var prompts = new List<Prompts>
             {
-                new() { Text = prompt, Weight = 1 }
+                new Prompts() { Text = prompt, Weight = 1 }
             };
             if (!string.IsNullOrEmpty(negativePrompt))
             {
@@ -79,13 +77,13 @@ namespace StableDiffusion.AI.Core.V1
 
         private async Task<IEnumerable<byte[]>> GenerateImagesCoreAsync(string modelName, ImageParams input)
         {
-            ArgumentNullException.ThrowIfNull(modelName);
-            ArgumentNullException.ThrowIfNull(input);
+           
 
             using var client = new HttpClient();
             string requestUrl = $"{BaseAddress}/generation/{modelName}/text-to-image";
             client.DefaultRequestHeaders.Add("Authorization", $"Bearer {_apiKey}");
-            var response = await client.PostAsJsonAsync(requestUrl, input);
+            var stringContent = new StringContent(JsonConvert.SerializeObject(input), null, "application/json");
+            var response = await client.PostAsync(requestUrl, stringContent);
             var data = JsonConvert.DeserializeObject<Output>(await response.Content.ReadAsStringAsync());
             if (!response.IsSuccessStatusCode)
             {

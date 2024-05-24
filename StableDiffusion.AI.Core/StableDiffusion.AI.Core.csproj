@@ -1,7 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>net8.0</TargetFramework>
+		<TargetFramework>netstandard2.0</TargetFramework>
+		<LangVersion>10.0</LangVersion>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 		<PackageIcon>favicon.png</PackageIcon>
@@ -9,7 +10,7 @@
 		<PackageTags>StableDiffusion</PackageTags>
 		<Authors>maxwell60701</Authors>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
-		<PackageVersion>1.0.3</PackageVersion>
+		<PackageVersion>1.1.0</PackageVersion>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<PackageReleaseNotes>add image dimension parameter</PackageReleaseNotes>
 		<Description>This is an unofficial library just for developers to get stable diffusion ai easily</Description>

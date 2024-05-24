@@ -9,8 +9,9 @@
 		<PackageTags>StableDiffusion</PackageTags>
 		<Authors>maxwell60701</Authors>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
-		<PackageVersion>1.0.2</PackageVersion>
+		<PackageVersion>1.0.3</PackageVersion>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<PackageReleaseNotes>add image dimension parameter</PackageReleaseNotes>
 		<Description>This is an unofficial library just for developers to get stable diffusion ai easily</Description>
 	</PropertyGroup>
 

@@ -1,7 +1,6 @@
 ﻿using Newtonsoft.Json;
 using StableDiffusion.AI.Core.V1.Exceptions;
 using StableDiffusion.AI.Core.V1.Images;
-using System.Text;
 
 namespace StableDiffusion.AI.Core.V1
 {
@@ -23,8 +22,8 @@ namespace StableDiffusion.AI.Core.V1
         /// <param name="args"></param>
         /// <returns></returns>
         public async Task<IEnumerable<byte[]>> GenerateImagesAsync(string modelName, string prompt, string? negativePrompt = null, ImageArgs? args = null)
-        {          
-            return await GenerateImagesAsync(modelName, prompt,Dimension.Resolution1024x1024.Width,Dimension.Resolution1024x1024.Height, negativePrompt,args);
+        {
+            return await GenerateImagesAsync(modelName, prompt, Dimension.Resolution1024x1024.Width, Dimension.Resolution1024x1024.Height, negativePrompt, args);
         }
 
         /// <summary>
@@ -77,8 +76,10 @@ namespace StableDiffusion.AI.Core.V1
 
         private async Task<IEnumerable<byte[]>> GenerateImagesCoreAsync(string modelName, ImageParams input)
         {
-           
-
+            if (string.IsNullOrEmpty(modelName))
+            {
+                throw new ArgumentNullException(nameof(modelName));
+            }
             using var client = new HttpClient();
             string requestUrl = $"{BaseAddress}/generation/{modelName}/text-to-image";
             client.DefaultRequestHeaders.Add("Authorization", $"Bearer {_apiKey}");
@@ -88,7 +89,7 @@ namespace StableDiffusion.AI.Core.V1
             if (!response.IsSuccessStatusCode)
             {
                 throw new InvalidDataException($"StabilityAPI refused to generate: {data?.Message}");
-            }         
+            }
             var list = new List<byte[]>();
             foreach (var img in data?.Artifacts)
             {

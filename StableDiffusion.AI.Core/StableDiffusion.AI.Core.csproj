@@ -12,7 +12,7 @@
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<PackageVersion>1.1.0</PackageVersion>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
-		<PackageReleaseNotes>add image dimension parameter</PackageReleaseNotes>
+		<PackageReleaseNotes>change targetFramework to net standard 2.0</PackageReleaseNotes>
 		<Description>This is an unofficial library just for developers to get stable diffusion ai easily</Description>
 	</PropertyGroup>
 

@@ -1,4 +1,4 @@
-﻿
+﻿using Moq;
 using StableDiffusion.AI.Core.V1;
 using StableDiffusion.AI.Core.V1.Images;
 
@@ -24,11 +24,24 @@ namespace StableDiffusion.AI.Core.Tests
         }
 
         [TestMethod()]
+        public async Task GenerateImageWithHttpClientFactoryTest()
+        {
+            using var httpClient = new HttpClient();
+            var mockHttpClientFactory = new Mock<IHttpClientFactory>();
+            mockHttpClientFactory.Setup(factory => factory.CreateClient(It.IsAny<string>())).Returns(httpClient);
+            var service = new StableDiffusionService(_apiKey, mockHttpClientFactory.Object);
+            var response = await service.V1.GenerateImagesAsync(Model.X1, _prompt, _negativePrompt);
+            Console.WriteLine(response);
+            File.WriteAllBytes(_outPutFilePath, response?.FirstOrDefault());
+            Assert.IsTrue(File.Exists(_outPutFilePath));
+        }
+
+        [TestMethod()]
         public async Task GenerateImageWithResolution1344x768Test()
-        {        
+        {
             File.Delete(_outPutFilePath);
             var service = new StableDiffusionService(_apiKey);
-            var response = await service.V1.GenerateImagesAsync(Model.X1, _prompt,Dimension.Resolution1344x768,_negativePrompt);
+            var response = await service.V1.GenerateImagesAsync(Model.X1, _prompt, Dimension.Resolution1344x768, _negativePrompt);
             Console.WriteLine(response);
             File.WriteAllBytes(_outPutFilePath, response?.FirstOrDefault());
             Assert.IsTrue(File.Exists(_outPutFilePath));
@@ -48,7 +61,7 @@ namespace StableDiffusion.AI.Core.Tests
 
         [TestMethod()]
         public async Task GenerateImageWithResolution1024x1024Test()
-        {         
+        {
             File.Delete(_outPutFilePath);
             var service = new StableDiffusionService(_apiKey);
             var response = await service.V1.GenerateImagesAsync(Model.X1, _prompt, Dimension.Resolution1024x1024, _negativePrompt);
@@ -59,7 +72,7 @@ namespace StableDiffusion.AI.Core.Tests
 
         [TestMethod()]
         public async Task GenerateImageWithResolution1152x896Test()
-        {         
+        {
             File.Delete(_outPutFilePath);
             var service = new StableDiffusionService(_apiKey);
             var response = await service.V1.GenerateImagesAsync(Model.X1, _prompt, Dimension.Resolution1152x896, _negativePrompt);
@@ -130,10 +143,21 @@ namespace StableDiffusion.AI.Core.Tests
             int height = 1216;
             File.Delete(_outPutFilePath);
             var service = new StableDiffusionService(_apiKey);
-            var response = await service.V1.GenerateImagesAsync(Model.X1, _prompt,width,height);
+            var response = await service.V1.GenerateImagesAsync(Model.X1, _prompt, width, height);
             Console.WriteLine(response);
             File.WriteAllBytes(_outPutFilePath, response?.FirstOrDefault());
             Assert.IsTrue(File.Exists(_outPutFilePath));
+        }
+
+        [TestMethod()]
+        public async Task HttpClientFactoryAreSameTest()
+        {
+            var httpClient1 = new HttpClient();
+            var mockHttpClientFactory = new Mock<IHttpClientFactory>();
+            mockHttpClientFactory.Setup(factory => factory.CreateClient(It.IsAny<string>())).Returns(httpClient1);
+            httpClient1.Dispose();
+            var httpClient2 = mockHttpClientFactory.Object.CreateClient();
+            Assert.AreSame(httpClient1, httpClient2);
         }
     }
 }

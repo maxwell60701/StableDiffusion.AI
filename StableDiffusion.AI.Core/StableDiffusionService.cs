@@ -11,9 +11,9 @@ namespace StableDiffusion.AI.Core
             V1 = new StableDiffusionV1(apiKey);
         }
 
-        public StableDiffusionService(string apiKey,IHttpClientFactory httpClientFactory)
+        public StableDiffusionService(string apiKey, IHttpClientFactory httpClientFactory)
         {
-            V1 = new StableDiffusionV1(apiKey,httpClientFactory);
+            V1 = new StableDiffusionV1(apiKey, httpClientFactory);
         }
     }
 }

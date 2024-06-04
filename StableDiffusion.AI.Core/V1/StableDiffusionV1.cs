@@ -1,5 +1,5 @@
 ﻿using Newtonsoft.Json;
-using StableDiffusion.AI.Core.HttpClientBases;
+using StableDiffusion.AI.Core.HttpClientExtensions;
 using StableDiffusion.AI.Core.V1.Exceptions;
 using StableDiffusion.AI.Core.V1.Images;
 
@@ -88,7 +88,7 @@ namespace StableDiffusion.AI.Core.V1
             {
                 throw new ArgumentNullException(nameof(modelName));
             }
-            using var client = HttpClientBase.GetClient(_httpClientFactory);
+            using var client = _httpClientFactory.GetClient();
             string requestUrl = $"{BaseAddress}/generation/{modelName}/text-to-image";
             client.DefaultRequestHeaders.Add("Authorization", $"Bearer {_apiKey}");
             var stringContent = new StringContent(JsonConvert.SerializeObject(input), null, "application/json");

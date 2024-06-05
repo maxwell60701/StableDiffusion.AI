@@ -1,4 +1,4 @@
-﻿namespace StableDiffusion.AI.Core.V1.Images
+﻿namespace StableDiffusion.AI.Core.V1
 {
     public static class Model
     {

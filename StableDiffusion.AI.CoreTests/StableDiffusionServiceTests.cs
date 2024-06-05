@@ -1,6 +1,5 @@
 ﻿using Moq;
 using StableDiffusion.AI.Core.V1;
-using StableDiffusion.AI.Core.V1.Images;
 
 namespace StableDiffusion.AI.Core.Tests
 {

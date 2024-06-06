@@ -1,6 +1,6 @@
 ﻿namespace StableDiffusion.AI.Core.V1.Images
 {
-    public class ImageParams
+    public class TextToImageParams
     {
         /// <summary>
         /// How strongly to scale prompt input.Higher CFG scales tend to produce more contrast, and lower CFG scales produce less contrast.
@@ -19,7 +19,7 @@
         /// </summary>
         public int Steps { get; set; }
 
-        public IEnumerable<Prompts> Text_Prompts { get; set; }
+        public IEnumerable<Prompt> Text_Prompts { get; set; }
     }
 
     public class ImageArgs
@@ -38,10 +38,4 @@
         /// </summary>
         public int Steps { get; set; }
     }
-    public class Prompts
-    {
-        public string Text { get; set; }
-        public int Weight { get; set; }
-    }
-
 }

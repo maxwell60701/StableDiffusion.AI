@@ -1,6 +1,5 @@
 ﻿using Moq;
 using StableDiffusion.AI.Core.V1;
-using StableDiffusion.AI.Core.V1.Images;
 
 namespace StableDiffusion.AI.Core.Tests
 {
@@ -10,14 +9,29 @@ namespace StableDiffusion.AI.Core.Tests
         private readonly string _apiKey = "<your-private-key>";
         private readonly string _prompt = "a cute rabbit with sunglasses";
         private readonly string _negativePrompt = "low quality";
-        private readonly string _outPutFilePath = "<your-file-path>";
-
+        private readonly string _outPutFilePath = "<your-output-file-path>";
+        private readonly string _inputFilePath = "<your-input-file-path>";
+     
         [TestMethod()]
         public async Task GenerateImageTest()
         {
             File.Delete(_outPutFilePath);
             var service = new StableDiffusionService(_apiKey);
             var response = await service.V1.GenerateImagesAsync(Model.X1, _prompt, _negativePrompt);
+            Console.WriteLine(response);
+            File.WriteAllBytes(_outPutFilePath, response?.FirstOrDefault());
+            Assert.IsTrue(File.Exists(_outPutFilePath));
+        }
+
+        [TestMethod()]
+        public async Task GenerateImageByImageTest()
+        {
+            File.Delete(_outPutFilePath);
+            var service = new StableDiffusionService(_apiKey);
+            using var fileStream = File.OpenRead(_inputFilePath);
+            var byteData = new byte[fileStream.Length];
+            fileStream.Read(byteData, 0, byteData.Length);
+            var response = await service.V1.GenerateImagesAsync(Model.X1, new List<Prompt> { new() { Text = "green,land,grass", Weight = 0.5 } }, byteData);
             Console.WriteLine(response);
             File.WriteAllBytes(_outPutFilePath, response?.FirstOrDefault());
             Assert.IsTrue(File.Exists(_outPutFilePath));

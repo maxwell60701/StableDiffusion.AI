@@ -10,10 +10,10 @@
 		<PackageTags>StableDiffusion</PackageTags>
 		<Authors>maxwell60701</Authors>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
-		<PackageVersion>1.1.2</PackageVersion>
+		<PackageVersion>1.1.3</PackageVersion>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
-		<PackageReleaseNotes>add httpclientfactory to manange http lifecycle</PackageReleaseNotes>
-		<Description>This is an unofficial library just for developers to get stable diffusion ai easily</Description>
+		<PackageReleaseNotes>add image to image web api</PackageReleaseNotes>
+		<Description>This is an unofficial library just for developers to get stable diffusion web api easily</Description>
 	</PropertyGroup>
 
 	<ItemGroup>

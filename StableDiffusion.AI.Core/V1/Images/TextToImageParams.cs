@@ -19,7 +19,7 @@
         /// </summary>
         public int Steps { get; set; }
 
-        public IEnumerable<Prompts> Text_Prompts { get; set; }
+        public IEnumerable<Prompt> Text_Prompts { get; set; }
     }
 
     public class ImageArgs

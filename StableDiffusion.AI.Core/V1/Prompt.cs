@@ -1,9 +1,9 @@
 ﻿namespace StableDiffusion.AI.Core.V1
 {
-    public class Prompts
+    public class Prompt
     {
         public string Text { get; set; }
-        public int Weight { get; set; }
+        public double Weight { get; set; }
     }
 
 }
